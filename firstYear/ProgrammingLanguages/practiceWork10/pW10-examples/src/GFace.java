@@ -2,8 +2,6 @@
  * This class implements a face as a GCompound. */ 
 // Note: only need acm.graphics since this is not 
 // actually a program, but just a class using graphics. import acm.graphics.*; 
-package ua.com.glybovets.java1_1.lecture11;
-
 import java.awt.Color;
 import acm.program.*;
 import acm.graphics.*;
