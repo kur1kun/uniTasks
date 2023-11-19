@@ -12,8 +12,8 @@ public class Dice extends GCompound {
     public boolean diceChecked = false;
     private int diceValue;
     private final int x, y;
-    private Color diceOwnColor = Color.BLACK;
-    private Color diceCheckedColor = Color.RED;
+    private final Color diceOwnColor = Color.BLACK;
+    private final Color diceCheckedColor = Color.RED;
 
     public Dice(int x, int y) {
         Random r = new Random();
