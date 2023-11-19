@@ -1,3 +1,5 @@
+package Task2;
+
 import acm.graphics.GCompound;
 import acm.graphics.GOval;
 import acm.graphics.GRect;
@@ -5,20 +7,32 @@ import acm.graphics.GRect;
 import java.awt.*;
 import java.util.Random;
 
-public class Dice extends GCompound{
-    private final int diceValue;
-    public Dice (int x, int y){
+public class Dice extends GCompound {
+    public static final int diceSize = 40;
+    public boolean diceChecked = false;
+    private int diceValue;
+    private final int x, y;
+    private Color diceOwnColor = Color.BLACK;
+    private Color diceCheckedColor = Color.RED;
+
+    public Dice(int x, int y) {
         Random r = new Random();
-        diceValue = r.nextInt(5)+1;
-        draw(diceValue, x, y, Color.BLACK);
+        diceValue = r.nextInt(5) + 1;
+        this.x = x;
+        this.y = y;
+        draw(diceValue, x, y, diceOwnColor);
     }
 
     public int getValue() {
         return diceValue;
     }
 
-    public void draw(int dotNum, int x, int y, Color color) {
-        final int diceSize = 100;
+    public void getChecked() {
+        diceChecked = !diceChecked;
+        draw(diceValue, this.x, this.y, (diceChecked) ? diceCheckedColor : diceOwnColor);
+    }
+
+    private void draw(int dotNum, int x, int y, Color color) {
         GCompound dice = new GCompound();
 
         GRect diceBorder = new GRect(diceSize, diceSize);
@@ -68,7 +82,7 @@ public class Dice extends GCompound{
         add(dice);
     }
 
-    private GOval Dot(double x, double y, double r, Color color){
+    private GOval Dot(double x, double y, double r, Color color) {
         GOval dot = new GOval(x, y, r, r);
         dot.setColor(color);
         dot.setFilled(true);
