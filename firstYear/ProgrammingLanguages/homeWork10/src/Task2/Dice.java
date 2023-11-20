@@ -16,11 +16,9 @@ public class Dice extends GCompound {
     private final Color diceCheckedColor = Color.RED;
 
     public Dice(int x, int y) {
-        Random r = new Random();
-        diceValue = r.nextInt(5) + 1;
         this.x = x;
         this.y = y;
-        draw(diceValue, x, y, diceOwnColor);
+        drawWithNewValue();
     }
 
     public int getValue() {
@@ -30,6 +28,12 @@ public class Dice extends GCompound {
     public void getChecked() {
         diceChecked = !diceChecked;
         draw(diceValue, this.x, this.y, (diceChecked) ? diceCheckedColor : diceOwnColor);
+    }
+
+    public void drawWithNewValue(){
+        Random r = new Random();
+        diceValue =  r.nextInt(5) + 1;
+        draw(diceValue, x, y, diceOwnColor);
     }
 
     private void draw(int dotNum, int x, int y, Color color) {
@@ -42,40 +46,43 @@ public class Dice extends GCompound {
         dice.add(diceBorder);
 
         double dotsSize = diceSize * 0.15;
-        double dotsMargin = (diceSize - 4 * dotsSize) / 2;
+        double firstColumnMargin = (diceSize - 4 * dotsSize) / 2;
+        double centerMargin = (diceSize - dotsSize) / 2;
+        double secondColumnMargin = diceSize - dotsSize - firstColumnMargin;
+
         switch (dotNum) {
             case 1:
-                dice.add(Dot((diceSize - dotsSize) / 2, (diceSize - dotsSize) / 2, dotsSize, color));
+                dice.add(Dot(centerMargin, centerMargin, dotsSize, color));
                 break;
             case 2:
-                dice.add(Dot(dotsMargin, dotsMargin, dotsSize, color));
-                dice.add(Dot(diceSize - dotsSize - dotsMargin, diceSize - dotsSize - dotsMargin, dotsSize, color));
+                dice.add(Dot(firstColumnMargin, firstColumnMargin, dotsSize, color));
+                dice.add(Dot(secondColumnMargin, secondColumnMargin, dotsSize, color));
                 break;
             case 3:
-                dice.add(Dot(dotsMargin, dotsMargin, dotsSize, color));
-                dice.add(Dot((diceSize - dotsSize) / 2, (diceSize - dotsSize) / 2, dotsSize, color));
-                dice.add(Dot(diceSize - dotsSize - dotsMargin, diceSize - dotsSize - dotsMargin, dotsSize, color));
+                dice.add(Dot(firstColumnMargin, firstColumnMargin, dotsSize, color));
+                dice.add(Dot(centerMargin, centerMargin, dotsSize, color));
+                dice.add(Dot(secondColumnMargin, secondColumnMargin, dotsSize, color));
                 break;
             case 4:
-                dice.add(Dot(dotsMargin, dotsMargin, dotsSize, color));
-                dice.add(Dot(dotsMargin, diceSize - dotsSize - dotsMargin, dotsSize, color));
-                dice.add(Dot(diceSize - dotsSize - dotsMargin, dotsMargin, dotsSize, color));
-                dice.add(Dot(diceSize - dotsSize - dotsMargin, diceSize - dotsSize - dotsMargin, dotsSize, color));
+                dice.add(Dot(firstColumnMargin, firstColumnMargin, dotsSize, color));
+                dice.add(Dot(firstColumnMargin, secondColumnMargin, dotsSize, color));
+                dice.add(Dot(secondColumnMargin, firstColumnMargin, dotsSize, color));
+                dice.add(Dot(secondColumnMargin, secondColumnMargin, dotsSize, color));
                 break;
             case 5:
-                dice.add(Dot(dotsMargin, dotsMargin, dotsSize, color));
-                dice.add(Dot(dotsMargin, diceSize - dotsSize - dotsMargin, dotsSize, color));
-                dice.add(Dot((diceSize - dotsSize) / 2, (diceSize - dotsSize) / 2, dotsSize, color));
-                dice.add(Dot(diceSize - dotsSize - dotsMargin, dotsMargin, dotsSize, color));
-                dice.add(Dot(diceSize - dotsSize - dotsMargin, diceSize - dotsSize - dotsMargin, dotsSize, color));
+                dice.add(Dot(firstColumnMargin, firstColumnMargin, dotsSize, color));
+                dice.add(Dot(firstColumnMargin, secondColumnMargin, dotsSize, color));
+                dice.add(Dot(centerMargin, centerMargin, dotsSize, color));
+                dice.add(Dot(secondColumnMargin, firstColumnMargin, dotsSize, color));
+                dice.add(Dot(secondColumnMargin, secondColumnMargin, dotsSize, color));
                 break;
             case 6:
-                dice.add(Dot(dotsMargin, dotsMargin, dotsSize, color));
-                dice.add(Dot(dotsMargin, diceSize - dotsSize - dotsMargin, dotsSize, color));
-                dice.add(Dot(dotsMargin, (diceSize - dotsSize) / 2, dotsSize, color));
-                dice.add(Dot(diceSize - dotsSize - dotsMargin, (diceSize - dotsSize) / 2, dotsSize, color));
-                dice.add(Dot(diceSize - dotsSize - dotsMargin, dotsMargin, dotsSize, color));
-                dice.add(Dot(diceSize - dotsSize - dotsMargin, diceSize - dotsSize - dotsMargin, dotsSize, color));
+                dice.add(Dot(firstColumnMargin, firstColumnMargin, dotsSize, color));
+                dice.add(Dot(firstColumnMargin, secondColumnMargin, dotsSize, color));
+                dice.add(Dot(firstColumnMargin, centerMargin, dotsSize, color));
+                dice.add(Dot(secondColumnMargin, centerMargin, dotsSize, color));
+                dice.add(Dot(secondColumnMargin, firstColumnMargin, dotsSize, color));
+                dice.add(Dot(secondColumnMargin, secondColumnMargin, dotsSize, color));
                 break;
         }
         dice.setLocation(x, y);
