@@ -11,7 +11,7 @@ public class Runner extends GraphicsProgram {
     public static Hand firstPlayer = new Hand();
     public static Hand secondPlayer = new Hand();
     public static boolean gameIsRunning = true;
-    private final int WINDOWWIDTH = 1000;
+    private final int WINDOWWIDTH = 1500;
     private final int WINDOWHEIGHT = 400;
     private final Button rerollButton = new Button();
     private final Font winSansS = new Font("SansSerif", Font.BOLD, 40);

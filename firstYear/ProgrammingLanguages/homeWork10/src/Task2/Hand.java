@@ -44,31 +44,43 @@ public class Hand {
         Map<Integer, Integer> mapHand1 = buildMap(hand1);
         Map<Integer, Integer> mapHand2 = buildMap(hand2);
 
+        System.out.println(getComparisonValue(mapHand1));
+        System.out.println(getComparisonValue(mapHand2));
         return getComparisonValue(mapHand1) - getComparisonValue(mapHand2);
     }
 
     private int getComparisonValue(Map<Integer, Integer> hand) {
         if (hand.containsValue(5)) {
-            return getKey(hand, 5, -1) * 100000;
+            return getKey(hand, 5, -1, -1) * 1000000;
         } else if (hand.containsValue(4)) {
-            return getKey(hand, 4, -1) * 10000;
+            return getKey(hand, 4, -1, -1) * 100000 + getKey(hand, 1, -1, -1);
         } else if (hand.containsValue(3) && hand.containsValue(2)) {
-            return getKey(hand, 3, -1) * 1000 + getKey(hand, 2, -1) * 100;
+            return getKey(hand, 3, -1, -1) * 10000 + getKey(hand, 2, -1, -1) * 1000;
         } else if (hand.containsValue(3)) {
-            return getKey(hand, 3, -1) * 100;
+            int keySet = getKey(hand, 3, -1, -1);
+            int keyFirst = getKey(hand, 1, -1, -1);
+            return keySet * 1000 + Math.max(keyFirst, getKey(hand, 1, keyFirst, -1));
         } else if (hand.containsValue(2)) {
-            int key = getKey(hand, 2, -1);
-            return (getKey(hand, 2, key) == -1) ? key * 10 : 99;
+            int keyFirstPair = getKey(hand, 2, -1, -1);
+            int keySecondPair = getKey(hand, 2, keyFirstPair, -1);
+            if (keySecondPair != -1) { // it is Two Pairs
+                return keySecondPair*100 + keyFirstPair*10 + getKey(hand, 1, -1, -1);
+            } else{ // it is One Pair
+                int keyThirdEl = getKey(hand, 1, -1, -1);
+                int keyFourthEl = getKey(hand, 1, keyThirdEl, -1);
+                int keyFifthEl = getKey(hand, 1, keyThirdEl, keyFourthEl);
+                return keyFirstPair*10+Math.max(keyThirdEl, Math.max(keyFourthEl, keyFifthEl));
+            }
         } else if (!hand.containsKey(1) || !hand.containsKey(6)) {
             return (hand.containsKey(6)) ? 900 : 800;
         }
-        return 0;
+        return (hand.containsKey(6))? (hand.containsKey(5))? (hand.containsKey(4))? (hand.containsKey(3))? (hand.containsKey(2))? 1 : 2 : 3 : 4 : 5 : 6;
     }
 
-    private int getKey(Map<Integer, Integer> hand, int value, int ignKey) {
+    private int getKey(Map<Integer, Integer> hand, int value, int ignKey, int ignSecKey) {
         for (int i = 1; i <= 6; i++) {
             if (hand.containsKey(i)) {
-                if (hand.get(i) == value && i != ignKey) {
+                if (hand.get(i) == value && i != ignKey && i != ignSecKey) {
                     return i;
                 }
             }
