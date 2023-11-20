@@ -1,45 +1,80 @@
 package Task2;
 
+import acm.graphics.GLabel;
 import acm.graphics.GPoint;
 import acm.program.GraphicsProgram;
 
+import java.awt.*;
 import java.awt.event.MouseEvent;
 
 public class Runner extends GraphicsProgram {
-    private final int MARGINTOP = 50;
-    private final int MARGINBETWEEN = 10;
-    private final int MARGINBETWEENPLAYERS = 40;
+    public static Hand firstPlayer = new Hand();
+    public static Hand secondPlayer = new Hand();
+    public static boolean gameIsRunning = true;
+    private final int WINDOWWIDTH = 1000;
+    private final int WINDOWHEIGHT = 400;
+    private final Button rerollButton = new Button();
+    private final Font winSansS = new Font("SansSerif", Font.BOLD, 40);
 
     public void run() {
-        Hand firstPlayer = new Hand();
-        Hand secondPlayer = new Hand();
+        this.setSize(WINDOWWIDTH, WINDOWHEIGHT);
 
-        firstPlayer.setupAndDrawHand(MARGINBETWEEN, MARGINTOP, MARGINBETWEEN, this);
-        secondPlayer.setupAndDrawHand(5 * (MARGINBETWEEN + Dice.diceSize) + MARGINBETWEENPLAYERS, MARGINTOP, MARGINBETWEEN, this);
+        //Adaptive sizes
+        Dice.diceSize = WINDOWWIDTH * 0.0717;
+        final double dicesMarginTop = WINDOWHEIGHT * 0.20;
+        final double dicesMarginBetween = Dice.diceSize / 4;
+        final double playersMarginBetween = Dice.diceSize * 1.2;
+        Button.buttonWidth = WINDOWWIDTH * 0.30;
+        Button.buttonHeight = WINDOWHEIGHT * 0.15;
+        final double buttonsMarginTop = WINDOWHEIGHT * 0.6;
+        final double buttonsMarginLeft = (WINDOWWIDTH - Button.buttonWidth) / 2.04;
 
-        //firstPlayer.getDicesValues();
+        //Creating Players dices
+        firstPlayer.setupAndDrawHand(dicesMarginBetween, dicesMarginTop, dicesMarginBetween, this);
+        secondPlayer.setupAndDrawHand(playersMarginBetween + 5 * (dicesMarginBetween + Dice.diceSize), dicesMarginTop, dicesMarginBetween, this);
 
-        Button rerollButton = new Button();
-        rerollButton.draw(20,200);
+        //Reroll Button appears
+        rerollButton.draw(buttonsMarginLeft, buttonsMarginTop);
         add(rerollButton);
 
         addMouseListeners();
     }
 
+    public void finish() {
+        remove(rerollButton);
+
+        firstPlayer.changeCheckedDices();
+        secondPlayer.changeCheckedDices();
+
+        GLabel winnerLabelText = null;
+        int betterThan = firstPlayer.isBetterThan(secondPlayer);
+        if (betterThan > 0) {
+            winnerLabelText = new GLabel("First player wins!");
+        } else if (betterThan == 0) {
+            winnerLabelText = new GLabel("Its a tie");
+        } else if (betterThan < 0) {
+            winnerLabelText = new GLabel("Second player wins!");
+        }
+        winnerLabelText.setFont(winSansS);
+        winnerLabelText.setColor(Color.ORANGE);
+        winnerLabelText.setLocation((WINDOWWIDTH - winnerLabelText.getWidth()) / 2, WINDOWHEIGHT * 0.7);
+        add(winnerLabelText);
+
+        gameIsRunning = false;
+    }
+
     public void mousePressed(MouseEvent e) {
-        GPoint last = new GPoint(e.getPoint());
-        System.out.print("Clicked on ");
-        try {
-            Dice dice = (Dice) getElementAt(last);
-            System.out.println("dice " + dice.getValue());
-            dice.getChecked();
-        } catch (Exception ignored) {
+        if (gameIsRunning) {
+            GPoint last = new GPoint(e.getPoint());
             try {
-                Button button = (Button) getElementAt(last);
-                System.out.println("button");
-                button.getPressed();
-            } catch (Exception ignoredToo){
-                System.out.println("nothing");
+                Dice dice = (Dice) getElementAt(last);
+                dice.getChecked();
+            } catch (Exception ignored) {
+                try {
+                    Button button = (Button) getElementAt(last);
+                    button.getPressed(this);
+                } catch (Exception ignoredToo) {
+                }
             }
         }
     }

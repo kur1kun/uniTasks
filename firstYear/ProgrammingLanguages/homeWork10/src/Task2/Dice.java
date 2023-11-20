@@ -8,14 +8,14 @@ import java.awt.*;
 import java.util.Random;
 
 public class Dice extends GCompound {
-    public static final int diceSize = 40;
+    public static double diceSize = 40;
     public boolean diceChecked = false;
     private int diceValue;
-    private final int x, y;
+    private final double x, y;
     private final Color diceOwnColor = Color.BLACK;
     private final Color diceCheckedColor = Color.RED;
 
-    public Dice(int x, int y) {
+    public Dice(double x, double y) {
         this.x = x;
         this.y = y;
         drawWithNewValue();
@@ -30,13 +30,14 @@ public class Dice extends GCompound {
         draw(diceValue, this.x, this.y, (diceChecked) ? diceCheckedColor : diceOwnColor);
     }
 
-    public void drawWithNewValue(){
+    public void drawWithNewValue() {
+        diceChecked = false;
         Random r = new Random();
-        diceValue =  r.nextInt(5) + 1;
+        diceValue = r.nextInt(6) + 1;
         draw(diceValue, x, y, diceOwnColor);
     }
 
-    private void draw(int dotNum, int x, int y, Color color) {
+    private void draw(int dotNum, double x, double y, Color color) {
         GCompound dice = new GCompound();
 
         GRect diceBorder = new GRect(diceSize, diceSize);
