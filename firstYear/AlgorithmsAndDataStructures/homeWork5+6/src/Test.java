@@ -60,6 +60,28 @@ public class Test {
         Sorter.shellSort(products);
         System.out.println("\nArray after Shell Sort:");
         printArray(products);
+
+        // Сортування злиттям
+        products = new Product[]{
+                new Product<>("Milk", 1.99, 10, "Dairy", 4),
+                new Product<>("Bread", 0.99, 15, "Bakery", 5),
+                new Product<>("Cheese", 2.99, 5, "Dairy", 4)
+        };
+
+        Sorter.mergeSort(products, 0, products.length - 1);
+        System.out.println("\nArray after Merge Sort:");
+        printArray(products);
+
+        // Швидке сортування
+        products = new Product[]{
+                new Product<>("Milk", 1.99, 10, "Dairy", 4),
+                new Product<>("Bread", 0.99, 15, "Bakery", 5),
+                new Product<>("Cheese", 2.99, 5, "Dairy", 4)
+        };
+
+        Sorter.quickSort(products, 0, products.length - 1);
+        System.out.println("\nArray after Quick Sort:");
+        printArray(products);
     }
 
     // Метод для друку масиву
